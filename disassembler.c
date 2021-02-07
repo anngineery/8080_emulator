@@ -10,6 +10,7 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
 
    printf ("%04x ", pc);   // Left-pad with zeros, width = 4, unsigned hex
 
+   // When printing two bytes, keep little endianess in mind!
    switch (*code){
       case 0x00: printf("NOP"); break;
       case 0x01: printf("LXI    B, #$%02x%02x", code[2], code[1]); opbytes=3; break;
@@ -28,7 +29,7 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0x0e: printf("MVI    C, #$%02x", code[1]); opbytes=2; break;
       case 0x0f: printf("RRC"); break;
       case 0x10: printf("NOP"); break;
-      case 0x11: printf("LXI    D, #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0x11: printf("LXI    D, #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x12: printf("STAX   D"); break;
       case 0x13: printf("INX    D"); break;
       case 0x14: printf("INR    D"); break;
@@ -44,8 +45,8 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0x1e: printf("MVI    E, #$%02x", code[1]); opbytes=2; break;
       case 0x1f: printf("RAR"); break;
       case 0x20: printf("NOP"); break;
-      case 0x21: printf("LXI    H, #$%02x%02x", code[1], code[2]); opbytes=3; break;
-      case 0x22: printf("SHLD   #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0x21: printf("LXI    H, #$%02x%02x", code[2], code[1]); opbytes=3; break;
+      case 0x22: printf("SHLD   #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x23: printf("INX    H"); break;
       case 0x24: printf("INR    H"); break;
       case 0x25: printf("DCR    H"); break;
@@ -53,15 +54,15 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0x27: printf("DAA"); break;
       case 0x28: printf("NOP"); break;
       case 0x29: printf("DAD    H"); break;
-      case 0x2a: printf("LHLD   #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0x2a: printf("LHLD   #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x2b: printf("DCX    H"); break;
       case 0x2c: printf("INR    L"); break;
       case 0x2d: printf("DCR    L"); break;
       case 0x2e: printf("MVI    L, #$%02x", code[1]); opbytes=2; break;
       case 0x2f: printf("CMA"); break;
       case 0x30: printf("NOP"); break;
-      case 0x31: printf("LXI    SP, #$%02x02x", code[1], code[2]); opbytes=3; break;
-      case 0x32: printf("STA    #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0x31: printf("LXI    SP, #$%02x02x", code[2], code[1]); opbytes=3; break;
+      case 0x32: printf("STA    #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x33: printf("INX    SP"); break;
       case 0x34: printf("INR    M"); break;
       case 0x35: printf("DCR    M"); break;
@@ -69,7 +70,7 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0x37: printf("STC"); break;
       case 0x38: printf("NOP"); break;
       case 0x39: printf("DAD    SP"); break;
-      case 0x3a: printf("LDA    #$%02x%02x", code[1], code[2]); break;
+      case 0x3a: printf("LDA    #$%02x%02x", code[2], code[1]); break;
       case 0x3b: printf("DCX    SP"); break;
       case 0x3c: printf("INR    A"); break;
       case 0x3d: printf("DCR    A"); break;
@@ -205,24 +206,20 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0xbf: printf("CMP    A"); break;
       case 0xc0: printf("RNZ"); break;
       case 0xc1: printf("POP    B"); break;
-      case 0xc2: printf("JNZ    #$%02x%02x", code[1], code[2]); opbytes=3; break;
-      case 0xc3: printf("JMP    #$%02x%02x", code[1], code[2]); opbytes=3; break;
-      case 0xc4: printf("CNZ    #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0xc2: printf("JNZ    #$%02x%02x", code[2], code[1]); opbytes=3; break;
+      case 0xc3: printf("JMP    #$%02x%02x", code[2], code[1]); opbytes=3; break;
+      case 0xc4: printf("CNZ    #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0xc5: printf("PUSH   B"); break;
       case 0xc6: printf("ADI    #$%02x", code[1]); opbytes=2; break;
       case 0xc7: printf("RST    0"); break;
       case 0xc8: printf("RZ"); break;
       case 0xc9: printf("RET"); break;
-      case 0xca: printf("JZ     #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0xca: printf("JZ     #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0xcb: printf("NOP"); break;
-      case 0xcc: printf("CZ     #$%02x%02x", code[1], code[2]); opbytes=3; break;
-      case 0xcd: printf("CALL   #$%02x%02x", code[1], code[2]); opbytes=3; break;
+      case 0xcc: printf("CZ     #$%02x%02x", code[2], code[1]); opbytes=3; break;
+      case 0xcd: printf("CALL   #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0xce: printf("ACI    #$%02x", code[1]); opbytes=2; break;
       case 0xcf: printf("RST    1"); break;
-
-
-      /* ........ */
-      case 0xc3: printf("JMP    $%02x%02x",code[2],code[1]); opbytes=3; break;
       /* ........ */
    }
 
