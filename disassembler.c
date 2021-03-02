@@ -1,5 +1,7 @@
+#include <stdio.h>
+
 /*
- *
+ * **Write 1 line description of this function**
  * @param *codebuffer A valid pointer to 8080 assembly code
  * @param pc The current offset into the code
  * @return A number of bytes used in disassembled opcode
@@ -8,7 +10,7 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
    unsigned char *code = &codebuffer[pc];
    int opbytes = 1;
 
-   printf ("%04x ", pc);   // Left-pad with zeros, width = 4, unsigned hex
+   printf("%04x ", pc);   // Left-pad with zeros, width = 4, unsigned hex
 
    // When printing two bytes, keep little endianess in mind!
    switch (*code){
@@ -61,7 +63,7 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0x2e: printf("MVI    L, #$%02x", code[1]); opbytes=2; break;
       case 0x2f: printf("CMA"); break;
       case 0x30: printf("NOP"); break;
-      case 0x31: printf("LXI    SP, #$%02x02x", code[2], code[1]); opbytes=3; break;
+      case 0x31: printf("LXI    SP, #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x32: printf("STA    #$%02x%02x", code[2], code[1]); opbytes=3; break;
       case 0x33: printf("INX    SP"); break;
       case 0x34: printf("INR    M"); break;
