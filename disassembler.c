@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 /*
  * **Write 1 line description of this function**
@@ -276,4 +277,32 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
    printf("\n");
 
    return opbytes;
+}
+
+int main(int argc, char *argv[]) {
+   int offset = 0;
+   //int size = sizeof binary / sizeof binary[0];
+
+   FILE* f = fopen("invaders.h", "rb");
+
+   if (f == NULL){
+      printf("It is null\n");
+      return 0;
+   }
+
+   fseek(f, 0, SEEK_END);
+   long fsize = ftell(f);
+   fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
+
+   int *code = malloc(fsize + 1);
+   fread(code, 1, fsize, f);
+   fclose(f);
+
+   code[fsize] = 0;
+   printf("%d\n", code);
+   printf("File size is : %ld\n", fsize);
+
+   while (offset <fsize){
+      offset += Disassemble8080Op(code, offset);
+   }
 }
