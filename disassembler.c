@@ -271,7 +271,6 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
       case 0xfd: printf("NOP"); break;
       case 0xfe: printf("CPI   #$%02x", code[1]); break;
       case 0xff: printf("RST   7"); break;
-      /* ........ */
    }
 
    printf("\n");
