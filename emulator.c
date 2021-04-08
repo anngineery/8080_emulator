@@ -528,22 +528,200 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0x90: UnimplementedInstruction(state); break;
-        case 0x91: UnimplementedInstruction(state); break;
-        case 0x92: UnimplementedInstruction(state); break;
-        case 0x93: UnimplementedInstruction(state); break;
-        case 0x94: UnimplementedInstruction(state); break;
-        case 0x95: UnimplementedInstruction(state); break;
-        case 0x96: UnimplementedInstruction(state); break;
-        case 0x97: UnimplementedInstruction(state); break;
-        case 0x98: UnimplementedInstruction(state); break;
-        case 0x99: UnimplementedInstruction(state); break;
-        case 0x9a: UnimplementedInstruction(state); break;
-        case 0x9b: UnimplementedInstruction(state); break;
-        case 0x9c: UnimplementedInstruction(state); break;
-        case 0x9d: UnimplementedInstruction(state); break;
-        case 0x9e: UnimplementedInstruction(state); break;
-        case 0x9f: UnimplementedInstruction(state); break;
+        case 0x90:  // SUB B
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->b;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x91:  // SUB C
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->c;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x92:  // SUB D
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->d;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x93:  // SUB E
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->e;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x94:  // SUB H
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->h;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x95:  // SUB L
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->l;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x96:  // SUB M
+        {
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint16_t answer = (uint16_t) state->a - state->memory[offset];
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x97:  // SUB A
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->a;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x98:  // SBB B
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->b - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x99:  // SBB C
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->c - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9a:  // SBB D
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->d - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9b:  // SBB E
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->e - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9c:  // SBB H
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->h - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9d:  // SBB L
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->l - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9e:  // SBB M
+        {
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint16_t answer = (uint16_t) state->a - state->memory[offset] - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
+        case 0x9f:  // SBB A
+        {
+            uint16_t answer = (uint16_t) state->a - (uint16_t) state->a - (uint16_t) state->cc.cy;
+            state->cc.z = ((answer & 0xff) == 0);
+            state->cc.s = ((answer & 0x80) != 0);
+            state->cc.cy = (answer > 0xff);
+            state->cc.p = Parity(answer&0xff);
+            state->a = answer & 0xff;
+
+            break;
+        }
+
         case 0xa0: UnimplementedInstruction(state); break;
         case 0xa1: UnimplementedInstruction(state); break;
         case 0xa2: UnimplementedInstruction(state); break;
