@@ -43,8 +43,15 @@ void Emulate8080Op(State8080* state) {
         case 0x00: UnimplementedInstruction(state); break;
         case 0x01: UnimplementedInstruction(state); break;
         case 0x02: UnimplementedInstruction(state); break;
-        case 0x03:  // INX B
+        case 0x03:  // INX B (rp is BC)
+        {
+            uint16_t value = (state->b) << 8 | (state->c);
+            value++;
+            state->c = value & 0xff;
+            state->b = value >> 8;
+
             break;
+        }
 
         case 0x04:  // INR B
         {
@@ -74,7 +81,16 @@ void Emulate8080Op(State8080* state) {
         case 0x08: UnimplementedInstruction(state); break;
         case 0x09: UnimplementedInstruction(state); break;
         case 0x0a: UnimplementedInstruction(state); break;
-        case 0x0b: UnimplementedInstruction(state); break;
+        case 0x0b:  // DCX B (rp is BC)
+        {
+            uint16_t value = (state->b) << 8 | (state->c);
+            value--;
+            state->c = value & 0xff;
+            state->b = value >> 8;
+
+            break;
+        }
+
         case 0x0c:  // INR C
         {
             uint8_t answer = state->c + 1;
@@ -103,7 +119,16 @@ void Emulate8080Op(State8080* state) {
         case 0x10: UnimplementedInstruction(state); break;
         case 0x11: UnimplementedInstruction(state); break;
         case 0x12: UnimplementedInstruction(state); break;
-        case 0x13: UnimplementedInstruction(state); break;
+        case 0x13:  // INX D (rp is DE)
+        {
+            uint16_t value = (state->d) << 8 | (state->e);
+            value++;
+            state->e = value & 0xff;
+            state->d = value >> 8;
+
+            break;
+        }
+
         case 0x14:  // INR D
         {
             uint8_t answer = state->d + 1;
@@ -131,7 +156,16 @@ void Emulate8080Op(State8080* state) {
         case 0x18: UnimplementedInstruction(state); break;
         case 0x19: UnimplementedInstruction(state); break;
         case 0x1a: UnimplementedInstruction(state); break;
-        case 0x1b: UnimplementedInstruction(state); break;
+        case 0x1b:  // DCX D (rp is DE)
+        {
+            uint16_t value = (state->d) << 8 | (state->e);
+            value--;
+            state->e = value & 0xff;
+            state->d = value >> 8;
+
+            break;
+        }
+
         case 0x1c:  // INR E
         {
             uint8_t answer = state->e + 1;
@@ -159,7 +193,16 @@ void Emulate8080Op(State8080* state) {
         case 0x20: UnimplementedInstruction(state); break;
         case 0x21: UnimplementedInstruction(state); break;
         case 0x22: UnimplementedInstruction(state); break;
-        case 0x23: UnimplementedInstruction(state); break;
+        case 0x23:  // INX H (rp is HL)
+        {
+            uint16_t value = (state->h) << 8 | (state->l);
+            value++;
+            state->l = value & 0xff;
+            state->h = value >> 8;
+
+            break;
+        }
+
         case 0x24:  // INR H
         {
             uint8_t answer = state->h + 1;
@@ -187,7 +230,16 @@ void Emulate8080Op(State8080* state) {
         case 0x28: UnimplementedInstruction(state); break;
         case 0x29: UnimplementedInstruction(state); break;
         case 0x2a: UnimplementedInstruction(state); break;
-        case 0x2b: UnimplementedInstruction(state); break;
+        case 0x2b:  // DCX H (rp is HL)
+        {
+            uint16_t value = (state->h) << 8 | (state->l);
+            value--;
+            state->l = value & 0xff;
+            state->h = value >> 8;
+
+            break;
+        }
+
         case 0x2c:  // INR L
         {
             uint8_t answer = state->l + 1;
@@ -215,7 +267,14 @@ void Emulate8080Op(State8080* state) {
         case 0x30: UnimplementedInstruction(state); break;
         case 0x31: UnimplementedInstruction(state); break;
         case 0x32: UnimplementedInstruction(state); break;
-        case 0x33: UnimplementedInstruction(state); break;
+        case 0x33:  // INX SP
+        {
+            uint16_t value = state->sp + 1;
+            state->sp = value;
+
+            break;
+        }
+
         case 0x34:  // INR M
         {
             uint16_t offset = (state->h<<8) | (state->l);
@@ -245,7 +304,14 @@ void Emulate8080Op(State8080* state) {
         case 0x38: UnimplementedInstruction(state); break;
         case 0x39: UnimplementedInstruction(state); break;
         case 0x3a: UnimplementedInstruction(state); break;
-        case 0x3b: UnimplementedInstruction(state); break;
+        case 0x3b:  // DCX SP
+        {
+            uint16_t value = state->sp - 1;
+            state->sp = value;
+
+            break;
+        }
+
         case 0x3c:  // INR A
         {
             uint8_t answer = state->a + 1;
