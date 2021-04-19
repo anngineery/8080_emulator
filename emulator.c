@@ -79,7 +79,18 @@ void Emulate8080Op(State8080* state) {
         case 0x06: UnimplementedInstruction(state); break;
         case 0x07: UnimplementedInstruction(state); break;
         case 0x08: UnimplementedInstruction(state); break;
-        case 0x09: UnimplementedInstruction(state); break;
+        case 0x09:  // DAD B
+        {
+            uint16_t accumulator = (state->h<<8) | (state->l);
+            uint16_t increment = (state->b<<8) | (state->c);
+            uint32_t answer = accumulator + increment;
+            state->cc.cy = (answer > 0xffff);
+            state->l = answer & 0xff;
+            state->h = answer >> 8;
+
+            break;
+        }
+
         case 0x0a: UnimplementedInstruction(state); break;
         case 0x0b:  // DCX B (rp is BC)
         {
@@ -154,7 +165,18 @@ void Emulate8080Op(State8080* state) {
         case 0x16: UnimplementedInstruction(state); break;
         case 0x17: UnimplementedInstruction(state); break;
         case 0x18: UnimplementedInstruction(state); break;
-        case 0x19: UnimplementedInstruction(state); break;
+        case 0x19:  // DAD D
+        {
+            uint16_t accumulator = (state->h<<8) | (state->l);
+            uint16_t increment = (state->d<<8) | (state->e);
+            uint32_t answer = accumulator + increment;
+            state->cc.cy = (answer > 0xffff);
+            state->l = answer & 0xff;
+            state->h = answer >> 8;
+
+            break;
+        }
+
         case 0x1a: UnimplementedInstruction(state); break;
         case 0x1b:  // DCX D (rp is DE)
         {
@@ -228,7 +250,17 @@ void Emulate8080Op(State8080* state) {
         case 0x26: UnimplementedInstruction(state); break;
         case 0x27: UnimplementedInstruction(state); break;
         case 0x28: UnimplementedInstruction(state); break;
-        case 0x29: UnimplementedInstruction(state); break;
+        case 0x29:  // DAD H
+        {
+            uint16_t accumulator = (state->h<<8) | (state->l);
+            uint32_t answer = accumulator << 1;
+            state->cc.cy = (answer > 0xffff);
+            state->l = answer & 0xff;
+            state->h = answer >> 8;
+
+            break;
+        }
+
         case 0x2a: UnimplementedInstruction(state); break;
         case 0x2b:  // DCX H (rp is HL)
         {
@@ -302,7 +334,17 @@ void Emulate8080Op(State8080* state) {
         case 0x36: UnimplementedInstruction(state); break;
         case 0x37: UnimplementedInstruction(state); break;
         case 0x38: UnimplementedInstruction(state); break;
-        case 0x39: UnimplementedInstruction(state); break;
+        case 0x39:  // DAD SP
+        {
+            uint16_t accumulator = (state->h<<8) | (state->l);
+            uint32_t answer = accumulator + state->sp;
+            state->cc.cy = (answer > 0xffff);
+            state->l = answer & 0xff;
+            state->h = answer >> 8;
+
+            break;
+        }
+
         case 0x3a: UnimplementedInstruction(state); break;
         case 0x3b:  // DCX SP
         {
