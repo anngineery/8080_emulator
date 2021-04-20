@@ -864,8 +864,25 @@ void Emulate8080Op(State8080* state) {
         case 0xbf: UnimplementedInstruction(state); break;
         case 0xc0: UnimplementedInstruction(state); break;
         case 0xc1: UnimplementedInstruction(state); break;
-        case 0xc2: UnimplementedInstruction(state); break;
-        case 0xc3: UnimplementedInstruction(state); break;
+
+        case 0xc2:  // JNZ address
+        {
+            if (0 == state->cc.z)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
+        case 0xc3:  //JMP address
+        {
+            state->pc = (opcode[2] << 8) | opcode[1];
+
+            break;
+        }
+
         case 0xc4: UnimplementedInstruction(state); break;
         case 0xc5: UnimplementedInstruction(state); break;
 
@@ -884,7 +901,16 @@ void Emulate8080Op(State8080* state) {
         case 0xc7: UnimplementedInstruction(state); break;
         case 0xc8: UnimplementedInstruction(state); break;
         case 0xc9: UnimplementedInstruction(state); break;
-        case 0xca: UnimplementedInstruction(state); break;
+        case 0xca:  // JZ address
+        {
+            if (state->cc.z)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
         case 0xcb: UnimplementedInstruction(state); break;
         case 0xcc: UnimplementedInstruction(state); break;
         case 0xcd: UnimplementedInstruction(state); break;
@@ -903,7 +929,17 @@ void Emulate8080Op(State8080* state) {
         case 0xcf: UnimplementedInstruction(state); break;
         case 0xd0: UnimplementedInstruction(state); break;
         case 0xd1: UnimplementedInstruction(state); break;
-        case 0xd2: UnimplementedInstruction(state); break;
+        case 0xd2:  // JNC address
+        {
+            if (0 == state->cc.cy)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xd3: UnimplementedInstruction(state); break;
         case 0xd4: UnimplementedInstruction(state); break;
         case 0xd5: UnimplementedInstruction(state); break;
@@ -911,7 +947,17 @@ void Emulate8080Op(State8080* state) {
         case 0xd7: UnimplementedInstruction(state); break;
         case 0xd8: UnimplementedInstruction(state); break;
         case 0xd9: UnimplementedInstruction(state); break;
-        case 0xda: UnimplementedInstruction(state); break;
+        case 0xda:  // JC address
+        {
+            if (state->cc.cy)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xdb: UnimplementedInstruction(state); break;
         case 0xdc: UnimplementedInstruction(state); break;
         case 0xdd: UnimplementedInstruction(state); break;
@@ -919,7 +965,17 @@ void Emulate8080Op(State8080* state) {
         case 0xdf: UnimplementedInstruction(state); break;
         case 0xe0: UnimplementedInstruction(state); break;
         case 0xe1: UnimplementedInstruction(state); break;
-        case 0xe2: UnimplementedInstruction(state); break;
+        case 0xe2:  // JPO address
+        {
+            if (0 == state->cc.p)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xe3: UnimplementedInstruction(state); break;
         case 0xe4: UnimplementedInstruction(state); break;
         case 0xe5: UnimplementedInstruction(state); break;
@@ -927,7 +983,17 @@ void Emulate8080Op(State8080* state) {
         case 0xe7: UnimplementedInstruction(state); break;
         case 0xe8: UnimplementedInstruction(state); break;
         case 0xe9: UnimplementedInstruction(state); break;
-        case 0xea: UnimplementedInstruction(state); break;
+        case 0xea:  // JPE address
+        {
+            if (state->cc.p)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xeb: UnimplementedInstruction(state); break;
         case 0xec: UnimplementedInstruction(state); break;
         case 0xed: UnimplementedInstruction(state); break;
@@ -935,7 +1001,17 @@ void Emulate8080Op(State8080* state) {
         case 0xef: UnimplementedInstruction(state); break;
         case 0xf0: UnimplementedInstruction(state); break;
         case 0xf1: UnimplementedInstruction(state); break;
-        case 0xf2: UnimplementedInstruction(state); break;
+        case 0xf2:  // JP address
+        {
+            if (0 == state->cc.s)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xf3: UnimplementedInstruction(state); break;
         case 0xf4: UnimplementedInstruction(state); break;
         case 0xf5: UnimplementedInstruction(state); break;
@@ -943,7 +1019,17 @@ void Emulate8080Op(State8080* state) {
         case 0xf7: UnimplementedInstruction(state); break;
         case 0xf8: UnimplementedInstruction(state); break;
         case 0xf9: UnimplementedInstruction(state); break;
-        case 0xfa: UnimplementedInstruction(state); break;
+        case 0xfa:  // JM address
+        {
+            if (state->cc.s)
+                state->pc = (opcode[2] << 8) | opcode[1];
+            else
+                // branch not taken
+                state->pc += 2;
+
+            break;
+        }
+
         case 0xfb: UnimplementedInstruction(state); break;
         case 0xfc: UnimplementedInstruction(state); break;
         case 0xfd: UnimplementedInstruction(state); break;
