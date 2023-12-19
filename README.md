@@ -5,6 +5,7 @@ A [project](http://emulator101.com/) for making an emulator for Intel 8080 micro
 - [System User's Manual](http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf)
 - [Assembly Language Programming Manual](http://dunfield.classiccmp.org/r/8080asm.pdf)
 
+https://academic-accelerator.com/encyclopedia/intel-8080
 ## Basic information
 - 8-bit processor (word size is 8 bits)
 - predecessor: 8008, later influenced x86 architecture (8086 microprocessor)
