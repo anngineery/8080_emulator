@@ -19,4 +19,13 @@ A [project](http://emulator101.com/) for making an emulator for Intel 8080 micro
   -  HL: can be used as a 16-bit accumulator for some instructions
 -  M (pseudo register): dereferenced memory lication pointed to by HL
 - dedicated 16-bit SP register
-  
+
+## Flags
+indicate the result of arithmetic/logical operations
+1. Sign (S): if result < 0
+2. Zero (Z): if result == 0
+3. Parity (P): if # of (bit == 1) is even
+4. Carry (C): if an addition resulted in a carry OR a subtraction required a borrow
+5. Auxiliary Carry (AC): ?
+* A accumulator + flags = Program Status Word (PSW)
+
