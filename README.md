@@ -5,6 +5,12 @@ A [project](http://emulator101.com/) for making an emulator for Intel 8080 micro
 - [System User's Manual](http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf)
 - [Assembly Language Programming Manual](http://dunfield.classiccmp.org/r/8080asm.pdf)
 
+# Some Conventions to Note
+In assembly,
+- # : indicates a literal number (immediate value)  `LXI SP, #$2400 // set SP to 0x2400`
+- (): indicates a memory location `(HL) means the memory location pointed by HL register pair`
+- $: denote a hex number `CALL $01e6  // same as CALL 0x01e6` 
+
 https://academic-accelerator.com/encyclopedia/intel-8080
 ## Basic information
 - 8-bit processor (word size is 8 bits)
@@ -29,7 +35,7 @@ indicate the result of arithmetic/logical operations. Used for conditional branc
 3. Parity (P): if # of (bit == 1) is even
 4. Carry (CY): if an addition resulted in a carry OR a subtraction required a borrow
 5. Auxiliary Carry (AC): indicates the carry-out of bit 3. It exists only for the DAA instruction, which is not used in Spade Invaders. So it will be ignored in this project
-* A accumulator + flags = Program Status Word (PSW)
+* A (accumulator) + flags = Program Status Word (PSW)
 
 ## Instructions
 ### Arithmetic
