@@ -26,7 +26,7 @@ indicate the result of arithmetic/logical operations
 1. Sign (S): if result < 0
 2. Zero (Z): if result == 0
 3. Parity (P): if # of (bit == 1) is even
-4. Carry (C): if an addition resulted in a carry OR a subtraction required a borrow
-5. Auxiliary Carry (AC): ?
+4. Carry (CY): if an addition resulted in a carry OR a subtraction required a borrow
+5. Auxiliary Carry (AC): indicates the carry-out of bit 3. It exists only for the DAA instruction, which is not used in Spade Invaders. So it will be ignored in this project
 * A accumulator + flags = Program Status Word (PSW)
 
