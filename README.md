@@ -7,9 +7,9 @@ A [project](http://emulator101.com/) for making an emulator for Intel 8080 micro
 
 # Some Conventions to Note
 In assembly,
-- # : indicates a literal number (immediate value)  `LXI SP, #$2400 // set SP to 0x2400`
-- (): indicates a memory location `(HL) means the memory location pointed by HL register pair`
-- $: denote a hex number `CALL $01e6  // same as CALL 0x01e6` 
+- `#` : indicates a literal number (immediate value)  `LXI SP, #$2400 // set SP to 0x2400`
+- `()`: indicates a memory location `(HL) means the memory location pointed by HL register pair`
+- `$`: denote a hex number `CALL $01e6  // same as CALL 0x01e6` 
 
 https://academic-accelerator.com/encyclopedia/intel-8080
 ## Basic information
