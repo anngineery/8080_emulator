@@ -13,7 +13,7 @@ In assembly,
 
 https://academic-accelerator.com/encyclopedia/intel-8080
 ## Basic information
-- 8-bit processor (word size is 8 bits)
+- 8-bit processor (~~word size is 8 bits~~ actually assembly language programming manual says word is 16 bits occupied by 2 side-by-side memory locations; 8 bits mean the size of CPU's data bus)
 - predecessor: 8008, later influenced x86 architecture (8086 microprocessor)
 - launched in 1974
 - 16-bit address bus, 8-bit data bus
@@ -25,7 +25,7 @@ https://academic-accelerator.com/encyclopedia/intel-8080
   -  A: primary 8-bit accumulator
   -  others can be used as three 16-bit register pairs (BC, DE, HL)
   -  HL: can be used as a 16-bit accumulator for some instructions
--  M (pseudo register): dereferenced memory lication pointed to by HL
+-  M (pseudo register): dereferenced memory location pointed to by HL
 - dedicated 16-bit SP register
 
 ## Flags (Condition Code)
@@ -70,3 +70,10 @@ What other instructions under this category are there?
 2 reasons to branch instead of execute the subsequent instruction
 1. (conditonal or unconditional) jump - jump to a specific memory location based on flags
 2. call - calling a subroutine; In a way, I think calling a subroutine is like executing an unconditional jump + extra chores (saving the caller's state in a frame) ---> TODO: link to Week 8 of Nand2Tetris
+
+An interesting to note is that there are conditional CALL and RET instructions too. Just like conditional jump instructions, the decision is made based on a specific flag.
+
+### Logical
+Similar to the arithmetic group, operations are performed usually on A register and it affects the flags. A difference is that no logical instruction works on a register pair.
+#### Boolean operations
+AND, OR, NOT (in 8080's world, it is called CMA, complement accumulator, instead), XOR

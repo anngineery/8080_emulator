@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+"""
+What the memory looks like:
+address (16 bits)   content (8 bits)
+        0x0000    | 0000 0000 |
+        0x0001    | 0000 0000 |
+        0x0002    | 0000 0000 |
+        0x0003    | 0000 0000 |
+        0x0004    | 0000 0000 |
+"""
+
 typedef struct ConditionCodes {
     uint8_t    z:1;
     uint8_t    s:1;     // set if negative
@@ -21,12 +31,12 @@ typedef struct State8080 {
     uint8_t    l;
     uint16_t   sp;
     uint16_t   pc;
-    uint8_t    *memory;
+    uint8_t    *memory; // each memory location holds 8-bit data
     struct     ConditionCodes   cc;
     uint8_t    int_enable;
 } State8080;
 
-uint8_t Parity(uint8_t data){
+uint8_t parity(uint8_t data){
     ;
 }
 
@@ -301,7 +311,12 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x2e: UnimplementedInstruction(state); break;
-        case 0x2f: UnimplementedInstruction(state); break;
+        case 0x2f: UnimplementedInstruction(state)  // CMA (aka NOT A)
+        {
+            state->a = ~state->a    
+            //Data book says CMA doesn't effect the flags    
+            break;    
+        }
         case 0x30: UnimplementedInstruction(state); break;
         case 0x31: UnimplementedInstruction(state); break;
         case 0x32: UnimplementedInstruction(state); break;
@@ -836,30 +851,277 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xa0: UnimplementedInstruction(state); break;
-        case 0xa1: UnimplementedInstruction(state); break;
-        case 0xa2: UnimplementedInstruction(state); break;
-        case 0xa3: UnimplementedInstruction(state); break;
-        case 0xa4: UnimplementedInstruction(state); break;
-        case 0xa5: UnimplementedInstruction(state); break;
-        case 0xa6: UnimplementedInstruction(state); break;
-        case 0xa7: UnimplementedInstruction(state); break;
-        case 0xa8: UnimplementedInstruction(state); break;
-        case 0xa9: UnimplementedInstruction(state); break;
-        case 0xaa: UnimplementedInstruction(state); break;
-        case 0xab: UnimplementedInstruction(state); break;
-        case 0xac: UnimplementedInstruction(state); break;
-        case 0xad: UnimplementedInstruction(state); break;
-        case 0xae: UnimplementedInstruction(state); break;
-        case 0xaf: UnimplementedInstruction(state); break;
-        case 0xb0: UnimplementedInstruction(state); break;
-        case 0xb1: UnimplementedInstruction(state); break;
-        case 0xb2: UnimplementedInstruction(state); break;
-        case 0xb3: UnimplementedInstruction(state); break;
-        case 0xb4: UnimplementedInstruction(state); break;
-        case 0xb5: UnimplementedInstruction(state); break;
-        case 0xb6: UnimplementedInstruction(state); break;
-        case 0xb7: UnimplementedInstruction(state); break;
+        case 0xa0: UnimplementedInstruction(state)  // ANA B
+        {    
+            uint8_t x = state->a & state->b;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        }    
+
+        case 0xa1: UnimplementedInstruction(state)  // ANA C  
+        {    
+            uint8_t x = state->a & state->c;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa2: UnimplementedInstruction(state)  // ANA D
+        {    
+            uint8_t x = state->a & state->d;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa3: UnimplementedInstruction(state)  // ANA E
+        {    
+            uint8_t x = state->a & state->e;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa4: UnimplementedInstruction(state)  // ANA H
+        {    
+            uint8_t x = state->a & state->h;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa5: UnimplementedInstruction(state)  // ANA L
+        {    
+            uint8_t x = state->a & state->l;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa6: UnimplementedInstruction(state)  // ANA M
+        {    
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint8_t m = state->memory[offset]
+            uint8_t x = state->a & m;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa7: UnimplementedInstruction(state)  // ANA A
+        {    
+            uint8_t x = state->a & state->a;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa8: UnimplementedInstruction(state)  // XRA B
+        {    
+            uint8_t x = state->a ^ state->b;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xa9: UnimplementedInstruction(state)  // XRA C
+        {    
+            uint8_t x = state->a ^ state->c;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xaa: UnimplementedInstruction(state)  // XRA D
+        {    
+            uint8_t x = state->a ^ state->d;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xab: UnimplementedInstruction(state)  // XRA E
+        {    
+            uint8_t x = state->a ^ state->e;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xac: UnimplementedInstruction(state)  // XRA H
+        {    
+            uint8_t x = state->a ^ state->h;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xad: UnimplementedInstruction(state)  // XRA L
+        {    
+            uint8_t x = state->a ^ state->l;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xae: UnimplementedInstruction(state)  // XRA M
+        {    
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint8_t m = state->memory[offset]
+            uint8_t x = state->a & m;  
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xaf: UnimplementedInstruction(state)  // XRA A
+        {    
+            uint8_t x = state->a ^ state->a;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb0: UnimplementedInstruction(state)  // ORA B  
+        {    
+            uint8_t x = state->a | state->b;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb1: UnimplementedInstruction(state)  // ORA C
+        {    
+            uint8_t x = state->a | state->c;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb2: UnimplementedInstruction(state)  // ORA D
+        {    
+            uint8_t x = state->a | state->d;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb3: UnimplementedInstruction(state)  // ORA E
+        {    
+            uint8_t x = state->a | state->e;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb4: UnimplementedInstruction(state)  // ORA H
+        {    
+            uint8_t x = state->a | state->h;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb5: UnimplementedInstruction(state)  // ORA L
+        {    
+            uint8_t x = state->a | state->l;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb6: UnimplementedInstruction(state)  // ORA M
+        {    
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint8_t m = state->memory[offset]
+            uint8_t x = state->a | m;  
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
+        case 0xb7: UnimplementedInstruction(state)  // ORA A
+        {    
+            uint8_t x = state->a | state->a;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+
+            break;    
+        } 
         case 0xb8: UnimplementedInstruction(state); break;
         case 0xb9: UnimplementedInstruction(state); break;
         case 0xba: UnimplementedInstruction(state); break;
@@ -986,7 +1248,7 @@ void Emulate8080Op(State8080* state) {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
             state->memory[state->sp-2] = (ret & 0xff);    
-            state->sp = state->sp - 2;    
+            state->sp = state->sp - 2;  // why we do this? Assembly Lanuage Program Manual, Stack Operation section says so
             state->pc = (opcode[2] << 8) | opcode[1]; 
 
             break;
@@ -1144,7 +1406,19 @@ void Emulate8080Op(State8080* state) {
             break;
         }
         case 0xe5: UnimplementedInstruction(state); break;
-        case 0xe6: UnimplementedInstruction(state); break;
+        case 0xe6: UnimplementedInstruction(state)  // ANI
+        {    
+            uint8_t x = state->a & opcode[1];    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = 0;           //Data book says ANI clears CY    
+            state->a = x;    
+            state->pc++;                //for the data byte    
+            
+            break;      
+        }    
+
         case 0xe7: UnimplementedInstruction(state)  // RST 4
         {
             uint16_t ret = state->pc+2;
