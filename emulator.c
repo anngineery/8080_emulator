@@ -93,7 +93,15 @@ void Emulate8080Op(State8080* state) {
 
 
         case 0x06: UnimplementedInstruction(state); break;
-        case 0x07: UnimplementedInstruction(state); break;
+        case 0x07: UnimplementedInstruction(state)  // RLC
+        {    
+            uint8_t x = state->a;    
+            uint8_t original_msb = (x & 128) >> 7;
+            state->a = (x << 1) | original_msb;   // original bit 7 (MSB) becomes bit 0 (LSB)
+            state->cc.cy = original_msb;
+
+            break;
+        }  
         case 0x08: UnimplementedInstruction(state); break;
         case 0x09:  // DAD B
         {
@@ -142,7 +150,15 @@ void Emulate8080Op(State8080* state) {
 
 
         case 0x0e: UnimplementedInstruction(state); break;
-        case 0x0f: UnimplementedInstruction(state); break;
+        case 0x0f: UnimplementedInstruction(state)  // RRC
+        {    
+            uint8_t x = state->a;    
+            uint8_t original_lsb = x & 1;  
+            state->a = (original_lsb << 7) | (x >> 1);   // bit 0 (LSB) rolls over and become bit 7 (MSB)
+            state->cc.cy = original_lsb;    
+
+            break; 
+        }    
         case 0x10: UnimplementedInstruction(state); break;
         case 0x11: UnimplementedInstruction(state); break;
         case 0x12: UnimplementedInstruction(state); break;
@@ -179,7 +195,18 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x16: UnimplementedInstruction(state); break;
-        case 0x17: UnimplementedInstruction(state); break;
+        case 0x17: UnimplementedInstruction(state)  // RAL  (through carry)
+        {   
+            // carry    accumulator
+            //  x   <---  yyyyyyyy
+            //  |________________^
+            uint8_t x = state->a;    
+            uint8_t original_msb = (x & 128) >> 7;  
+            state->a = (x << 1) | (state->cc.cy);
+            state->cc.cy = original_msb;
+
+            break;
+        }  
         case 0x18: UnimplementedInstruction(state); break;
         case 0x19:  // DAD D
         {
@@ -227,7 +254,18 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x1e: UnimplementedInstruction(state); break;
-        case 0x1f: UnimplementedInstruction(state); break;
+        case 0x1f: UnimplementedInstruction(state)  // RAR (through carry)
+        {   
+            // accumulator    carry
+            //  yyyyyyyy  ---> x      
+            //  ^______________|
+            uint8_t x = state->a;    
+            uint8_t original_lsb = x & 1;  
+            state->a = (state->cc.cy << 7) | (x >> 1);
+            state->cc.cy = original_lsb;
+
+            break;
+        }     
         case 0x20: UnimplementedInstruction(state); break;
         case 0x21: UnimplementedInstruction(state); break;
         case 0x22: UnimplementedInstruction(state); break;
@@ -353,7 +391,12 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x36: UnimplementedInstruction(state); break;
-        case 0x37: UnimplementedInstruction(state); break;
+        case 0x37: UnimplementedInstruction(state) // STC (aka set CY)
+        {
+            state->cc.cy = 1;
+  
+            break;    
+        }
         case 0x38: UnimplementedInstruction(state); break;
         case 0x39:  // DAD SP
         {
@@ -397,7 +440,12 @@ void Emulate8080Op(State8080* state) {
             break;
         }
         case 0x3e: UnimplementedInstruction(state); break;
-        case 0x3f: UnimplementedInstruction(state); break;
+        case 0x3f: UnimplementedInstruction(state)  // CMC (aka NOT CY)
+        {
+            state->cc.cy = ~state->cc.cy   
+            //Data book says CMA doesn't effect the flags    
+            break;    
+        }
         case 0x40: UnimplementedInstruction(state); break;
         case 0x41: UnimplementedInstruction(state); break;
         case 0x42: UnimplementedInstruction(state); break;
