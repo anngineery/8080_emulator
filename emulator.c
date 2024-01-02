@@ -36,7 +36,7 @@ typedef struct State8080 {
     uint8_t    int_enable;
 } State8080;
 
-uint8_t parity(uint8_t data){
+uint8_t parity(uint8_t data, uint8_t numBits){
     ;
 }
 
@@ -1170,14 +1170,101 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb8: UnimplementedInstruction(state); break;
-        case 0xb9: UnimplementedInstruction(state); break;
-        case 0xba: UnimplementedInstruction(state); break;
-        case 0xbb: UnimplementedInstruction(state); break;
-        case 0xbc: UnimplementedInstruction(state); break;
-        case 0xbd: UnimplementedInstruction(state); break;
-        case 0xbe: UnimplementedInstruction(state); break;
-        case 0xbf: UnimplementedInstruction(state); break;
+        case 0xb8: UnimplementedInstruction(state)  //CMP B    
+        {    
+            uint16_t x = state->a - state->b;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xb9: UnimplementedInstruction(state)  //CMP C    
+        {    
+            uint16_t x = state->a - state->c;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xba: UnimplementedInstruction(state)  //CMP D    
+        {    
+            uint16_t x = state->a - state->d;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xbb: UnimplementedInstruction(state)  //CMP E    
+        {    
+            uint16_t x = state->a - state->e;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xbc: UnimplementedInstruction(state)  //CMP H  
+        {    
+            uint16_t x = state->a - state->h;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xbd: UnimplementedInstruction(state)  //CMP L    
+        {    
+            uint16_t x = state->a - state->l;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xbe: UnimplementedInstruction(state)  //CMP M    
+        {    
+            uint16_t offset = (state->h<<8) | (state->l);
+            uint16_t x = state->a - state->memory[offset];;    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }  
+        case 0xbf: UnimplementedInstruction(state)  //CMP A    
+        {     
+            state->cc.z = 1;    
+            state->cc.s = 0;      
+            state->cc.p = 1;    // having no 1 at all is considered even parity
+            state->cc.cy = 0;    
+            state->pc++;    
+
+            break; 
+        }  
         case 0xc0: UnimplementedInstruction(state)  // RNZ
         {
             if (!state->cc.z){
@@ -1616,7 +1703,18 @@ void Emulate8080Op(State8080* state) {
             break;
         }
         case 0xfd: UnimplementedInstruction(state); break;
-        case 0xfe: UnimplementedInstruction(state); break;
+        case 0xfe: UnimplementedInstruction(state)  //CPI byte    
+        {    
+            uint16_t x = state->a - opcode[1];    
+            state->cc.z = (x == 0);    
+            state->cc.s = (0x80 == (x & 0x80));    
+            //It isn't clear in the data book what to do with p - had to pick    
+            state->cc.p = parity(x, 8);    
+            state->cc.cy = !(x >> 8);    
+            state->pc++;    
+
+            break; 
+        }    
         case 0xff: UnimplementedInstruction(state)  // RST 7
         {
             uint16_t ret = state->pc+2;
