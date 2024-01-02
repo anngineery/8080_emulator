@@ -77,3 +77,12 @@ An interesting to note is that there are conditional CALL and RET instructions t
 Similar to the arithmetic group, operations are performed usually on A register and it affects the flags. A difference is that no logical instruction works on a register pair.
 #### Boolean operations
 AND, OR, NOT (in 8080's world, it is called CMA, complement accumulator, instead), XOR
+#### Rotate instructions
+Shifting left or right. Depending on where the new LSB or MSB comes from (either from the carry bit or the original LSB/MSB rolls over), things are slightly different  
+
+Just for fun - how can we implement mult function using rotate and add? https://en.wikipedia.org/wiki/Binary_multiplier
+#### Compare instructions
+A register or a memory content is compared against the accumulator by being subtracted from the accumulator. (ex) A - register B \
+It does not alter the content of A or the operands, but it sets flags based on the result.
+#### Set and claer the carry flag
+CMC and STC
