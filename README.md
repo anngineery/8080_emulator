@@ -86,3 +86,9 @@ A register or a memory content is compared against the accumulator by being subt
 It does not alter the content of A or the operands, but it sets flags based on the result.
 #### Set and claer the carry flag
 CMC and STC
+
+### I/O and Special Group
+Use case of NOP:
+1. pad timing
+2. "deleting code" - when you need to change the ROM code, you cannot just remove instructions you don't want, because that will mess with JMP and CALL instructions. So instead of removing them, you replace them with NOPs.
+

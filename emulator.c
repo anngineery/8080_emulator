@@ -500,7 +500,7 @@ void Emulate8080Op(State8080* state) {
         case 0x73: UnimplementedInstruction(state); break;
         case 0x74: UnimplementedInstruction(state); break;
         case 0x75: UnimplementedInstruction(state); break;
-        case 0x76: UnimplementedInstruction(state); break;
+        case 0x76: UnimplementedInstruction(state); break;  // HLT - what to do? exit?
         case 0x77: UnimplementedInstruction(state); break;
         case 0x78: UnimplementedInstruction(state); break;
         case 0x79: UnimplementedInstruction(state); break;
@@ -1431,7 +1431,12 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xd3: UnimplementedInstruction(state); break;
+        case 0xd3:  // OUT D8 (TODO)
+        {
+            state.pc++;
+
+            break;
+        }
         case 0xd4: UnimplementedInstruction(state)  // CNC addr
         {
             if (!state->cc.cy){
@@ -1479,7 +1484,12 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xdb: UnimplementedInstruction(state); break;
+        case 0xdb:  // IN D8 (TODO)
+        {
+            state->pc++;
+
+            break;
+        }
         case 0xdc: UnimplementedInstruction(state)  // CC addr
         {
             if (state->cc.cy){
@@ -1638,7 +1648,12 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xf3: UnimplementedInstruction(state); break;
+        case 0xf3:  // DI
+        {
+            state.int_enable = 0;
+
+            break;
+        }
         case 0xf4: UnimplementedInstruction(state)  // CP addr
         {
             if (!state->cc.s){
@@ -1686,8 +1701,13 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xfb: UnimplementedInstruction(state); break;
-        case 0xfc: UnimplementedInstruction(state)  // CM addr
+        case 0xfb:  // EI (Enable Interrupt)
+        {
+            state.int_enable = 1;
+
+            break;
+        }
+        case 0xfc:  // CM addr
         {
             if (state->cc.s){
                 uint16_t ret = state->pc+2;
