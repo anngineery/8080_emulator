@@ -1432,7 +1432,15 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xd1: UnimplementedInstruction(state); break;
+	case 0xd1: // POP DE
+	{
+		state->e = state->memory[state->sp];
+		state->d = state->memory[state->sp+1];
+		state->sp += 2;
+
+		break;
+	}
+
         case 0xd2:  // JNC address
         {
             if (0 == state->cc.cy)
@@ -1544,7 +1552,15 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xe1: UnimplementedInstruction(state); break;
+        case 0xe1: // POP HL
+	{
+		state->l = state->memory[state->sp];
+		state->h = state->memory[state->sp+1];
+		state->sp += 2;
+
+		break;
+	}
+
         case 0xe2:  // JPO address
         {
             if (0 == state->cc.p)
@@ -1668,11 +1684,11 @@ void Emulate8080Op(State8080* state) {
 	{
 	    state->a = state->memory[state->sp+1];
 	    uint8_t psw = state->memory[state->sp];
-	    state->cc.z = (0x01 == (psw & 0x01));
-	    state->cc.s = (0x02 == (psw & 0x02));
+	    state->cc.cy = psw & 0x01;
 	    state->cc.p = (0x04 == (psw & 0x04));
-	    state->cc.cy = (0x05 == (psw & 0x08));
 	    state->cc.ac = (0x10 == (psw & 0x10));
+	    state->cc.z = (0x40 == (psw & 0x40));
+	    state->cc.s = (0x80 == (psw & 0x80));
 	    state->sp += 2;
 	
 	    break;
@@ -1711,11 +1727,12 @@ void Emulate8080Op(State8080* state) {
         case 0xf5: // PUSH PSW
 	{
 	    state->memory[state->sp-1] = state->a;
-	    uint8_t psw = (state->cc.z | 
-			    state->cc.s << 1 |
+	    uint8_t psw = ( 0x02 |
+			    state->cc.cy | 
 			    state->cc.p << 2 |
-			    state->cc.cy << 3 |
-			    state->cc.ac << 4);
+			    state->cc.ac << 4 |
+			    state->cc.z << 6 |
+			    state->cc.s << 7);
 	    state->memory[state->sp-2] = psw;
 	    state->sp = state->sp-2;
 
