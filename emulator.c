@@ -93,7 +93,7 @@ void Emulate8080Op(State8080* state) {
 
 
         case 0x06: UnimplementedInstruction(state); break;
-        case 0x07: UnimplementedInstruction(state)  // RLC
+        case 0x07:  // RLC
         {    
             uint8_t x = state->a;    
             uint8_t original_msb = (x & 128) >> 7;
@@ -150,7 +150,7 @@ void Emulate8080Op(State8080* state) {
 
 
         case 0x0e: UnimplementedInstruction(state); break;
-        case 0x0f: UnimplementedInstruction(state)  // RRC
+        case 0x0f:  // RRC
         {    
             uint8_t x = state->a;    
             uint8_t original_lsb = x & 1;  
@@ -195,7 +195,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x16: UnimplementedInstruction(state); break;
-        case 0x17: UnimplementedInstruction(state)  // RAL  (through carry)
+        case 0x17:  // RAL  (through carry)
         {   
             // carry    accumulator
             //  x   <---  yyyyyyyy
@@ -254,7 +254,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x1e: UnimplementedInstruction(state); break;
-        case 0x1f: UnimplementedInstruction(state)  // RAR (through carry)
+        case 0x1f:  // RAR (through carry)
         {   
             // accumulator    carry
             //  yyyyyyyy  ---> x      
@@ -349,7 +349,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x2e: UnimplementedInstruction(state); break;
-        case 0x2f: UnimplementedInstruction(state)  // CMA (aka NOT A)
+        case 0x2f:  // CMA (aka NOT A)
         {
             state->a = ~state->a    
             //Data book says CMA doesn't effect the flags    
@@ -391,7 +391,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0x36: UnimplementedInstruction(state); break;
-        case 0x37: UnimplementedInstruction(state) // STC (aka set CY)
+        case 0x37: // STC (aka set CY)
         {
             state->cc.cy = 1;
   
@@ -440,7 +440,7 @@ void Emulate8080Op(State8080* state) {
             break;
         }
         case 0x3e: UnimplementedInstruction(state); break;
-        case 0x3f: UnimplementedInstruction(state)  // CMC (aka NOT CY)
+        case 0x3f:  // CMC (aka NOT CY)
         {
             state->cc.cy = ~state->cc.cy   
             //Data book says CMA doesn't effect the flags    
@@ -899,7 +899,7 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xa0: UnimplementedInstruction(state)  // ANA B
+        case 0xa0:  // ANA B
         {    
             uint8_t x = state->a & state->b;    
             state->cc.z = (x == 0);    
@@ -911,7 +911,7 @@ void Emulate8080Op(State8080* state) {
             break;    
         }    
 
-        case 0xa1: UnimplementedInstruction(state)  // ANA C  
+        case 0xa1:  // ANA C  
         {    
             uint8_t x = state->a & state->c;    
             state->cc.z = (x == 0);    
@@ -922,7 +922,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa2: UnimplementedInstruction(state)  // ANA D
+        case 0xa2:  // ANA D
         {    
             uint8_t x = state->a & state->d;    
             state->cc.z = (x == 0);    
@@ -933,7 +933,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa3: UnimplementedInstruction(state)  // ANA E
+        case 0xa3:  // ANA E
         {    
             uint8_t x = state->a & state->e;    
             state->cc.z = (x == 0);    
@@ -944,7 +944,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa4: UnimplementedInstruction(state)  // ANA H
+        case 0xa4:  // ANA H
         {    
             uint8_t x = state->a & state->h;    
             state->cc.z = (x == 0);    
@@ -955,7 +955,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa5: UnimplementedInstruction(state)  // ANA L
+        case 0xa5:  // ANA L
         {    
             uint8_t x = state->a & state->l;    
             state->cc.z = (x == 0);    
@@ -966,7 +966,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa6: UnimplementedInstruction(state)  // ANA M
+        case 0xa6:  // ANA M
         {    
             uint16_t offset = (state->h<<8) | (state->l);
             uint8_t m = state->memory[offset]
@@ -979,7 +979,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa7: UnimplementedInstruction(state)  // ANA A
+        case 0xa7:  // ANA A
         {    
             uint8_t x = state->a & state->a;    
             state->cc.z = (x == 0);    
@@ -990,7 +990,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa8: UnimplementedInstruction(state)  // XRA B
+        case 0xa8:  // XRA B
         {    
             uint8_t x = state->a ^ state->b;    
             state->cc.z = (x == 0);    
@@ -1001,7 +1001,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xa9: UnimplementedInstruction(state)  // XRA C
+        case 0xa9:  // XRA C
         {    
             uint8_t x = state->a ^ state->c;    
             state->cc.z = (x == 0);    
@@ -1012,7 +1012,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xaa: UnimplementedInstruction(state)  // XRA D
+        case 0xaa:  // XRA D
         {    
             uint8_t x = state->a ^ state->d;    
             state->cc.z = (x == 0);    
@@ -1023,7 +1023,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xab: UnimplementedInstruction(state)  // XRA E
+        case 0xab:  // XRA E
         {    
             uint8_t x = state->a ^ state->e;    
             state->cc.z = (x == 0);    
@@ -1034,7 +1034,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xac: UnimplementedInstruction(state)  // XRA H
+        case 0xac:  // XRA H
         {    
             uint8_t x = state->a ^ state->h;    
             state->cc.z = (x == 0);    
@@ -1045,7 +1045,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xad: UnimplementedInstruction(state)  // XRA L
+        case 0xad:  // XRA L
         {    
             uint8_t x = state->a ^ state->l;    
             state->cc.z = (x == 0);    
@@ -1056,7 +1056,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xae: UnimplementedInstruction(state)  // XRA M
+        case 0xae:  // XRA M
         {    
             uint16_t offset = (state->h<<8) | (state->l);
             uint8_t m = state->memory[offset]
@@ -1069,7 +1069,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xaf: UnimplementedInstruction(state)  // XRA A
+        case 0xaf:  // XRA A
         {    
             uint8_t x = state->a ^ state->a;    
             state->cc.z = (x == 0);    
@@ -1080,7 +1080,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb0: UnimplementedInstruction(state)  // ORA B  
+        case 0xb0:  // ORA B  
         {    
             uint8_t x = state->a | state->b;    
             state->cc.z = (x == 0);    
@@ -1091,7 +1091,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb1: UnimplementedInstruction(state)  // ORA C
+        case 0xb1:  // ORA C
         {    
             uint8_t x = state->a | state->c;    
             state->cc.z = (x == 0);    
@@ -1102,7 +1102,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb2: UnimplementedInstruction(state)  // ORA D
+        case 0xb2:  // ORA D
         {    
             uint8_t x = state->a | state->d;    
             state->cc.z = (x == 0);    
@@ -1113,7 +1113,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb3: UnimplementedInstruction(state)  // ORA E
+        case 0xb3:  // ORA E
         {    
             uint8_t x = state->a | state->e;    
             state->cc.z = (x == 0);    
@@ -1124,7 +1124,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb4: UnimplementedInstruction(state)  // ORA H
+        case 0xb4:  // ORA H
         {    
             uint8_t x = state->a | state->h;    
             state->cc.z = (x == 0);    
@@ -1135,7 +1135,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb5: UnimplementedInstruction(state)  // ORA L
+        case 0xb5:  // ORA L
         {    
             uint8_t x = state->a | state->l;    
             state->cc.z = (x == 0);    
@@ -1146,7 +1146,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb6: UnimplementedInstruction(state)  // ORA M
+        case 0xb6:  // ORA M
         {    
             uint16_t offset = (state->h<<8) | (state->l);
             uint8_t m = state->memory[offset]
@@ -1159,7 +1159,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb7: UnimplementedInstruction(state)  // ORA A
+        case 0xb7:  // ORA A
         {    
             uint8_t x = state->a | state->a;    
             state->cc.z = (x == 0);    
@@ -1170,7 +1170,7 @@ void Emulate8080Op(State8080* state) {
 
             break;    
         } 
-        case 0xb8: UnimplementedInstruction(state)  //CMP B    
+        case 0xb8:  //CMP B    
         {    
             uint16_t x = state->a - state->b;    
             state->cc.z = (x == 0);    
@@ -1182,7 +1182,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xb9: UnimplementedInstruction(state)  //CMP C    
+        case 0xb9:  //CMP C    
         {    
             uint16_t x = state->a - state->c;    
             state->cc.z = (x == 0);    
@@ -1194,7 +1194,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xba: UnimplementedInstruction(state)  //CMP D    
+        case 0xba:  //CMP D    
         {    
             uint16_t x = state->a - state->d;    
             state->cc.z = (x == 0);    
@@ -1206,7 +1206,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xbb: UnimplementedInstruction(state)  //CMP E    
+        case 0xbb:  //CMP E    
         {    
             uint16_t x = state->a - state->e;    
             state->cc.z = (x == 0);    
@@ -1218,7 +1218,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xbc: UnimplementedInstruction(state)  //CMP H  
+        case 0xbc:  //CMP H  
         {    
             uint16_t x = state->a - state->h;    
             state->cc.z = (x == 0);    
@@ -1230,7 +1230,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xbd: UnimplementedInstruction(state)  //CMP L    
+        case 0xbd:  //CMP L    
         {    
             uint16_t x = state->a - state->l;    
             state->cc.z = (x == 0);    
@@ -1242,7 +1242,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xbe: UnimplementedInstruction(state)  //CMP M    
+        case 0xbe:  //CMP M    
         {    
             uint16_t offset = (state->h<<8) | (state->l);
             uint16_t x = state->a - state->memory[offset];;    
@@ -1255,7 +1255,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xbf: UnimplementedInstruction(state)  //CMP A    
+        case 0xbf:  //CMP A    
         {     
             state->cc.z = 1;    
             state->cc.s = 0;      
@@ -1265,7 +1265,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }  
-        case 0xc0: UnimplementedInstruction(state)  // RNZ
+        case 0xc0:  // RNZ
         {
             if (!state->cc.z){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1274,7 +1274,14 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xc1: UnimplementedInstruction(state); break;
+        case 0xc1: // POP stack to BC register pair
+	{
+		state->c = state->memory[state->sp];
+		state->b = state->memory[state->sp+1];
+		state->sp += 2;
+
+		break;
+	}
 
         case 0xc2:  // JNZ address
         {
@@ -1308,8 +1315,14 @@ void Emulate8080Op(State8080* state) {
             }
             break;
         }
-        case 0xc5: UnimplementedInstruction(state); break;
+       case 0xc5: // PUSH BC register pair to stack
+	{
+	    state->memory[state->sp-1] = state->b;
+	    state->memory[state->sp-2] = state->c;
+	    state->sp = state->sp-2;
 
+	    break;
+	}
         case 0xc6:  // ADI D8 = ADD Immediate (1 byte)
         {
             uint16_t answer = (uint16_t) state->a + (uint16_t) opcode[1];
@@ -1322,7 +1335,7 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xc7: UnimplementedInstruction(state)  // RST 0
+        case 0xc7:  // RST 0
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1332,7 +1345,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xc8: UnimplementedInstruction(state)  // RZ
+        case 0xc8:  // RZ
         {
             if (state->cc.z){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1400,7 +1413,7 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xcf: UnimplementedInstruction(state)  // RST 1
+        case 0xcf:  // RST 1
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1410,7 +1423,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xd0: UnimplementedInstruction(state)  // RNC
+        case 0xd0:  // RNC
         {
             if (!state->cc.cy){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1437,7 +1450,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xd4: UnimplementedInstruction(state)  // CNC addr
+        case 0xd4:  // CNC addr
         {
             if (!state->cc.cy){
                 uint16_t ret = state->pc+2;
@@ -1451,9 +1464,16 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xd5: UnimplementedInstruction(state); break;
+        case 0xd5: // PUSH DE
+	{
+	    state->memory[state->sp-1] = state->d;
+	    state->memory[state->sp-2] = state->e;
+	    state->sp = state->sp-2;
+
+	    break;
+	}
         case 0xd6: UnimplementedInstruction(state); break;
-        case 0xd7: UnimplementedInstruction(state)  // RST 2
+        case 0xd7:  // RST 2
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1463,7 +1483,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xd8: UnimplementedInstruction(state)  // RC
+        case 0xd8:  // RC
         {
             if (state->cc.cy){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1490,7 +1510,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xdc: UnimplementedInstruction(state)  // CC addr
+        case 0xdc:  // CC addr
         {
             if (state->cc.cy){
                 uint16_t ret = state->pc+2;
@@ -1505,7 +1525,7 @@ void Emulate8080Op(State8080* state) {
         }
         case 0xdd: UnimplementedInstruction(state); break;
         case 0xde: UnimplementedInstruction(state); break;
-        case 0xdf: UnimplementedInstruction(state)  // RST 3
+        case 0xdf:  // RST 3
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1515,7 +1535,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xe0: UnimplementedInstruction(state)  // RPO
+        case 0xe0:  // RPO
         {
             if (0 == state->cc.p){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1537,7 +1557,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0xe3: UnimplementedInstruction(state); break;
-        case 0xe4: UnimplementedInstruction(state)  // CPO addr
+        case 0xe4: // CPO addr
         {
             if (0 == state->cc.p){
                 uint16_t ret = state->pc+2;
@@ -1550,8 +1570,16 @@ void Emulate8080Op(State8080* state) {
                 state->pc += 2;
             break;
         }
-        case 0xe5: UnimplementedInstruction(state); break;
-        case 0xe6: UnimplementedInstruction(state)  // ANI
+        case 0xe5: // PUSH HL
+	{
+	    state->memory[state->sp-1] = state->h;
+	    state->memory[state->sp-2] = state->l;
+	    state->sp = state->sp-2;
+
+	    break;
+	}
+
+        case 0xe6: // ANI
         {    
             uint8_t x = state->a & opcode[1];    
             state->cc.z = (x == 0);    
@@ -1564,7 +1592,7 @@ void Emulate8080Op(State8080* state) {
             break;      
         }    
 
-        case 0xe7: UnimplementedInstruction(state)  // RST 4
+        case 0xe7: // RST 4
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1574,7 +1602,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xe8: UnimplementedInstruction(state)  // RPE
+        case 0xe8: // RPE
         {
             if (state->cc.p){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1583,7 +1611,7 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xe9: UnimplementedInstruction(state)  // PCHL
+        case 0xe9:  // PCHL
         {  
             state->pc = (state->h << 8) | state->l[1]; 
 
@@ -1601,7 +1629,7 @@ void Emulate8080Op(State8080* state) {
         }
 
         case 0xeb: UnimplementedInstruction(state); break;
-        case 0xec: UnimplementedInstruction(state)  // CPE addr
+        case 0xec:  // CPE addr
         {
             if (state->cc.p){
                 uint16_t ret = state->pc+2;
@@ -1617,7 +1645,7 @@ void Emulate8080Op(State8080* state) {
         }
         case 0xed: UnimplementedInstruction(state); break;
         case 0xee: UnimplementedInstruction(state); break;
-        case 0xef: UnimplementedInstruction(state)  // RST 5
+        case 0xef:  // RST 5
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1627,7 +1655,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xf0: UnimplementedInstruction(state)  // RP
+        case 0xf0:  // RP
         {
             if (!state->cc.s){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1636,7 +1664,19 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xf1: UnimplementedInstruction(state); break;
+        case 0xf1: // POP PSW
+	{
+	    state->a = state->memory[state->sp+1];
+	    uint8_t psw = state->memory[state->sp];
+	    state->cc.z = (0x01 == (psw & 0x01));
+	    state->cc.s = (0x02 == (psw & 0x02));
+	    state->cc.p = (0x04 == (psw & 0x04));
+	    state->cc.cy = (0x05 == (psw & 0x08));
+	    state->cc.ac = (0x10 == (psw & 0x10));
+	    state->sp += 2;
+	
+	    break;
+	}
         case 0xf2:  // JP address
         {
             if (0 == state->cc.s)
@@ -1654,7 +1694,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xf4: UnimplementedInstruction(state)  // CP addr
+        case 0xf4:  // CP addr
         {
             if (!state->cc.s){
                 uint16_t ret = state->pc+2;
@@ -1668,9 +1708,22 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xf5: UnimplementedInstruction(state); break;
+        case 0xf5: // PUSH PSW
+	{
+	    state->memory[state->sp-1] = state->a;
+	    uint8_t psw = (state->cc.z | 
+			    state->cc.s << 1 |
+			    state->cc.p << 2 |
+			    state->cc.cy << 3 |
+			    state->cc.ac << 4);
+	    state->memory[state->sp-2] = psw;
+	    state->sp = state->sp-2;
+
+	    break;
+	}
+
         case 0xf6: UnimplementedInstruction(state); break;
-        case 0xf7: UnimplementedInstruction(state)  // RST 6
+        case 0xf7:  // RST 6
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    
@@ -1680,7 +1733,7 @@ void Emulate8080Op(State8080* state) {
 
             break;
         }
-        case 0xf8: UnimplementedInstruction(state)  // RM
+        case 0xf8:  // RM
         {
             if (state->cc.s){
                 state->pc = state->memory[state->sp] | (state->memory[state->sp+1] << 8);    
@@ -1723,7 +1776,7 @@ void Emulate8080Op(State8080* state) {
             break;
         }
         case 0xfd: UnimplementedInstruction(state); break;
-        case 0xfe: UnimplementedInstruction(state)  //CPI byte    
+        case 0xfe:  //CPI byte    
         {    
             uint16_t x = state->a - opcode[1];    
             state->cc.z = (x == 0);    
@@ -1735,7 +1788,7 @@ void Emulate8080Op(State8080* state) {
 
             break; 
         }    
-        case 0xff: UnimplementedInstruction(state)  // RST 7
+        case 0xff:  // RST 7
         {
             uint16_t ret = state->pc+2;
             state->memory[state->sp-1] = (ret >> 8) & 0xff;    

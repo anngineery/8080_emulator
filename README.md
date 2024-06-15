@@ -92,3 +92,9 @@ Use case of NOP:
 1. pad timing
 2. "deleting code" - when you need to change the ROM code, you cannot just remove instructions you don't want, because that will mess with JMP and CALL instructions. So instead of removing them, you replace them with NOPs.
 
+
+### Stack Group
+PUSH and POP operations only work on register pairs (BC, DE, HL, PSW)
+PUSH = moving register contents to the stack
+POP = moving what is on the top of the stack to the register pairs
+
