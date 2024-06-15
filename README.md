@@ -95,6 +95,8 @@ Use case of NOP:
 
 ### Stack Group
 PUSH and POP operations only work on register pairs (BC, DE, HL, PSW)
+
 PUSH = moving register contents to the stack
+
 POP = moving what is on the top of the stack to the register pairs
 
