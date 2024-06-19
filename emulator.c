@@ -1572,7 +1572,15 @@ void Emulate8080Op(State8080* state) {
             break;
         }
 
-        case 0xe3: UnimplementedInstruction(state); break;
+        case 0xe3: // exchange stack
+	{
+	    uint8_t l_register = state->l;
+	    state->l = (state->sp)*;
+	    (state->sp)* = l_register;
+	    uint8_t h_register = state->h;
+	    state->h = (state->sp+1)*;
+	    (state->sp+1)* = h_register;
+	}
         case 0xe4: // CPO addr
         {
             if (0 == state->cc.p){
@@ -1759,7 +1767,11 @@ void Emulate8080Op(State8080* state) {
  
             break;
         }
-        case 0xf9: UnimplementedInstruction(state); break;
+        case 0xf9: // Load SP from HL
+	{
+	    state->sp = (state->h) << 8 | (state->l);
+	    break;
+	}
         case 0xfa:  // JM address
         {
             if (state->cc.s)
