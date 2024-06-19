@@ -94,10 +94,10 @@ Use case of NOP:
 
 
 ### Stack Group
-PUSH and POP operations only work on register pairs (BC, DE, HL, PSW)
-PUSH = moving register contents to the stack
+PUSH and POP operations only work on register pairs (BC, DE, HL, PSW)\
+PUSH = moving register contents to the stack\
 POP = moving what is on the top of the stack to the register pairs
 
-SPHL: Load SP from HL register pair
+SPHL: Load SP from HL register pair\
 XTHL: L register <-> content of address SP is pointing at; H register <-> content of address (SP+1) is pointing at
 
