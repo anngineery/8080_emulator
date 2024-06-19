@@ -19,6 +19,7 @@ https://academic-accelerator.com/encyclopedia/intel-8080
 - 16-bit address bus, 8-bit data bus
 - 64KB memory (64 * 1024 = 2^16)
 - little endian (LSB goes first in the memory)
+- use 2's complement to represent negative numbers
 
 ## Registers
 - seven 8-bit registers: A, B, C, D, E, H, L
