@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "disassembler.h"
 
 /*
 What the memory looks like:
@@ -13,14 +12,14 @@ address (16 bits)   content (8 bits)
     0x0004    | 0000 0000 |
 */
 
-    typedef struct ConditionCodes {
-        uint8_t    z:1;
-        uint8_t    s:1;     // set if negative
-        uint8_t    p:1;     // set if even
-        uint8_t    cy:1;
-        uint8_t    ac:1;    // Axiliary Carry is ignored, since I cannot test it
-        uint8_t    pad:3;
-    } ConditionCodes;
+typedef struct ConditionCodes {
+    uint8_t    z:1;
+    uint8_t    s:1;     // set if negative
+    uint8_t    p:1;     // set if even
+    uint8_t    cy:1;
+    uint8_t    ac:1;    // Axiliary Carry is ignored, since I cannot test it
+    uint8_t    pad:3;
+} ConditionCodes;
 
 typedef struct State8080 {
     uint8_t    a;
