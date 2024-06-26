@@ -1,6 +1,5 @@
 #include "disassembler.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 /*
  * **Write 1 line description of this function**
@@ -279,31 +278,3 @@ int Disassemble8080Op(unsigned char *codebuffer, int pc) {
 	return opbytes;
 }
 
-int main(int argc, char *argv[]) {
-
-	FILE* f = fopen(argv[1], "rb");
-
-	if (f){
-		int offset = 0;
-
-		// Determine the size of file
-		fseek(f, 0, SEEK_END);
-		long fsize = ftell(f);
-		fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
-
-		// Read file into a buffer and add the null terminator
-		char *code = malloc(fsize + 1);
-		fread(code, 1, fsize, f);
-		fclose(f);
-		code[fsize] = 0;
-
-		while (offset < fsize){
-			offset += Disassemble8080Op(code, offset);
-		}
-	}
-	else{
-		printf("File pointer is null");
-	}
-
-
-}
