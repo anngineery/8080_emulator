@@ -604,13 +604,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }
         case 0x7d: UnimplementedInstruction(state); break;
-        case 0x7e:  // MOV A, M
-                   {
-                       uint16_t address = (state->h<<8) | state->l;
-                       state->a = state->memory[address];
-
-                       break;
-                   }
+        case 0x7e: UnimplementedInstruction(state); break;
         case 0x7f: UnimplementedInstruction(state); break;
 
         case 0x80:  // ADD B
