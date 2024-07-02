@@ -1,5 +1,5 @@
 *.out
 invaders*
-dis*
+/dis
 *.o
 *.un~
