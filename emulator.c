@@ -325,7 +325,31 @@ void Emulate8080Op(State8080* state) {
 
                        break;
                    }
-        case 0x27: UnimplementedInstruction(state); break;
+        case 0x27:  // DAA
+                   {
+                       uint8_t lsb_4 = (state->a) | 0xf;
+
+                       if (lsb_4 > 9 || state->cc.ac) {
+                           state->a += 6;
+
+                           if (lsb_4 + 6 > 0xf) state->cc.ac = 1;
+                           else state->cc.ac = 0;
+                       }
+                           
+                       uint8_t msb_4 = (state->a) >> 4;
+
+                       if (msb_4 > 9 || state->cc.cy) {
+                            state->a += 0x60;
+                            if (msb_4 + 6 > 0xf) state->cc.cy = 1;
+                       }
+
+                       state->cc.z = (state->a == 0);
+                       state->cc.s = ((state->a & 0x80) != 0);
+                       state->cc.p = parity(state->a, 8);
+
+                       break;
+                    }
+
         case 0x28: UnimplementedInstruction(state); break;
         case 0x29:  // DAD H
                    {
@@ -386,7 +410,14 @@ void Emulate8080Op(State8080* state) {
 
                        break;
                    }
-        case 0x32: UnimplementedInstruction(state); break;
+        case 0x32:  // STA add
+                   {
+                       uint16_t address = (opcode[2]<<8) | opcode[1];
+                       state->memory[address] = state->a;
+                       state->pc += 2;
+
+                       break;
+                   }
         case 0x33:  // INX SP
                    {
                        uint16_t value = state->sp + 1;
@@ -1928,7 +1959,7 @@ void Emulate8080Op(State8080* state) {
                        state->pc = 38; // to addr $38
 
                        break;
-                   }
+                  }
     }
     state->pc+=1;  //for the opcode
 }
