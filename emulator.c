@@ -25,6 +25,7 @@ void UnimplementedInstruction(State8080* state) {
 
 void Emulate8080Op(State8080* state) {
     unsigned char *opcode = &state->memory[state->pc];
+    state->pc+=1;  // default
 
     switch(*opcode) {
         case 0x00: break;   // NOP
@@ -1961,5 +1962,4 @@ void Emulate8080Op(State8080* state) {
                        break;
                   }
     }
-    state->pc+=1;  //for the opcode
 }
