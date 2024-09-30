@@ -13,8 +13,11 @@ address (16 bits)   content (8 bits)
     0x0004    | 0000 0000 |
 */
 
-uint8_t parity(uint8_t data, uint8_t numBits){
-    ;
+uint8_t parity(uint8_t data){
+    // 0 if odd, 1 if even
+    // the built-in function returns 1 for odd parity,
+    // so we have to convert it
+    return (__builtin_parity(data) ? 0 : 1);
 }
 
 void UnimplementedInstruction(State8080* state) {
@@ -52,7 +55,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->b + 1;  // Store in 8 bits, bc we don't care about carry flag
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->b = answer;
 
                        break;
@@ -63,7 +66,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->b - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->b = answer;
 
                        break;
@@ -116,7 +119,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->c + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->c = answer;
 
                        break;
@@ -127,7 +130,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->c - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->c = answer;
 
                        break;
@@ -176,7 +179,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->d + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->d = answer;
 
                        break;
@@ -187,7 +190,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->d - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->d = answer;
 
                        break;
@@ -247,7 +250,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->e + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->e = answer;
 
                        break;
@@ -258,7 +261,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->e - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->e = answer;
 
                        break;
@@ -302,7 +305,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->h + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->h = answer;
 
                        break;
@@ -313,7 +316,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->h - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->h = answer;
 
                        break;
@@ -346,7 +349,7 @@ void Emulate8080Op(State8080* state) {
 
                        state->cc.z = (state->a == 0);
                        state->cc.s = ((state->a & 0x80) != 0);
-                       state->cc.p = parity(state->a, 8);
+                       state->cc.p = parity(state->a);
 
                        break;
                     }
@@ -379,7 +382,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->l + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->l = answer;
 
                        break;
@@ -390,7 +393,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->l - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->l = answer;
 
                        break;
@@ -433,7 +436,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->memory[offset] + 1;
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->memory[offset] = answer;
 
                        break;
@@ -445,7 +448,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->memory[offset] - 1;
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->memory[offset] = answer;
 
                        break;
@@ -498,7 +501,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->a + 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->a = answer;
 
                        break;
@@ -509,7 +512,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t answer = state->a - 1;
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
-                       state->cc.p = parity(answer, 8);
+                       state->cc.p = parity(answer);
                        state->a = answer;
 
                        break;
@@ -651,7 +654,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -663,7 +666,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -675,7 +678,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -687,7 +690,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -699,7 +702,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -711,7 +714,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -724,7 +727,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -736,7 +739,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -748,7 +751,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -760,7 +763,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -772,7 +775,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -784,7 +787,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -796,7 +799,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -808,7 +811,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -821,7 +824,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -833,7 +836,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -845,7 +848,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -857,7 +860,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -869,7 +872,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -881,7 +884,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -893,7 +896,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -905,7 +908,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -918,7 +921,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -930,7 +933,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -942,7 +945,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -954,7 +957,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -966,7 +969,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -978,7 +981,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -990,7 +993,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -1002,7 +1005,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -1015,7 +1018,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -1027,7 +1030,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
 
                        break;
@@ -1038,7 +1041,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->b;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1050,7 +1053,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->c;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1061,7 +1064,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->d;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1072,7 +1075,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->e;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1083,7 +1086,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->h;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1094,7 +1097,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->l;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1107,7 +1110,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & m;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1118,7 +1121,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & state->a;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1129,7 +1132,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->b;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1140,7 +1143,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->c;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1151,7 +1154,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->d;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1162,7 +1165,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->e;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1173,7 +1176,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->h;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1184,7 +1187,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->l;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1197,7 +1200,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & m;  
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1208,7 +1211,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a ^ state->a;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1219,7 +1222,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->b;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1230,7 +1233,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->c;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1241,7 +1244,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->d;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1252,7 +1255,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->e;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1263,7 +1266,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->h;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1274,7 +1277,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->l;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1287,7 +1290,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | m;  
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1298,7 +1301,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a | state->a;    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
 
@@ -1310,7 +1313,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1322,7 +1325,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1334,7 +1337,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1346,7 +1349,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1358,7 +1361,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1370,7 +1373,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1383,7 +1386,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 
@@ -1463,7 +1466,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
                        state->pc += 1;
                        break;
@@ -1541,7 +1544,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.cy = (answer > 0xff);
-                       state->cc.p = parity(answer&0xff, 8);
+                       state->cc.p = parity(answer&0xff);
                        state->a = answer & 0xff;
                        state->pc += 1;
                        break;
@@ -1742,7 +1745,7 @@ void Emulate8080Op(State8080* state) {
                        uint8_t x = state->a & opcode[1];    
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = 0;           //Data book says ANI clears CY    
                        state->a = x;    
                        state->pc++;                //for the data byte    
@@ -1945,7 +1948,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (x == 0);    
                        state->cc.s = (0x80 == (x & 0x80));    
                        //It isn't clear in the data book what to do with p - had to pick    
-                       state->cc.p = parity(x, 8);    
+                       state->cc.p = parity(x);    
                        state->cc.cy = !(x >> 8);    
                        state->pc++;    
 

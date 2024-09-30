@@ -1,6 +1,7 @@
 #ifndef EMULATOR_H
 #define EMULATOR_H
 #include <stdint.h>
+
 typedef struct ConditionCodes {
     uint8_t    z:1;
     uint8_t    s:1;     // set if negative
@@ -25,7 +26,8 @@ typedef struct State8080 {
     uint8_t    int_enable;
 } State8080;
 
-uint8_t parity(uint8_t data, uint8_t numBits);
+uint8_t parity(uint8_t data);
 void Emulate8080Op(State8080* state);
 void UnimplementedInstruction(State8080* state); 
+
 #endif
