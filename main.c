@@ -48,9 +48,17 @@ void printState(State8080 state){
 
 int main(int argc, char *argv[]) {
     bool debug = true;
-    uint8_t limit = 50;
+    uint8_t limit;  // = 50;
     uint8_t ctr = 0;
 	FILE* f = fopen(argv[1], "rb");
+
+    if (argc != 3){
+        printf("incorrect number of arguments. Quit program");
+        exit(EXIT_FAILURE);
+    }
+    else{
+        limit = atoi(argv[2]);
+    }
 
 	if (!f){
 		printf("File pointer is null");

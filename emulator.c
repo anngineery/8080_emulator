@@ -32,7 +32,7 @@ void Emulate8080Op(State8080* state) {
 
     switch(*opcode) {
         case 0x00: break;   // NOP
-        case 0x01:  // LXI B, D16
+        case 0x01:  // LXI B, D16 (no flag affected)
                    {
                        state->c = opcode[1];    
                        state->b = opcode[2];    
@@ -40,7 +40,7 @@ void Emulate8080Op(State8080* state) {
                        break;   
                    }
         case 0x02: UnimplementedInstruction(state); break;
-        case 0x03:  // INX B (rp is BC)
+        case 0x03:  // INX B (rp is BC) (no flag affected)
                    {
                        uint16_t value = (state->b) << 8 | (state->c);
                        value++;
@@ -56,6 +56,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->b & 0xf);
                        state->b = answer;
 
                        break;
@@ -67,6 +68,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->b & 0xf);
                        state->b = answer;
 
                        break;
@@ -120,6 +122,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->c & 0xf);
                        state->c = answer;
 
                        break;
@@ -131,6 +134,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->c & 0xf);
                        state->c = answer;
 
                        break;
@@ -155,7 +159,7 @@ void Emulate8080Op(State8080* state) {
                        break; 
                    }    
         case 0x10: UnimplementedInstruction(state); break;
-        case 0x11:  // LXI D, D16
+        case 0x11:  // LXI D, D16 (no affect on flags)
                    {
                        state->d = opcode[2];
                        state->e = opcode[1];
@@ -164,7 +168,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }
         case 0x12: UnimplementedInstruction(state); break;
-        case 0x13:  // INX D (rp is DE)
+        case 0x13:  // INX D (rp is DE, no flag affected)
                    {
                        uint16_t value = (state->d) << 8 | (state->e);
                        value++;
@@ -180,6 +184,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->d & 0xf);
                        state->d = answer;
 
                        break;
@@ -191,6 +196,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->d & 0xf);
                        state->d = answer;
 
                        break;
@@ -228,7 +234,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }
 
-        case 0x1a:  // LDAX D
+        case 0x1a:  // LDAX D (no flags affected)
                    {
                        uint16_t address = (state->d<<8) | (state->e);
                        state->a = state->memory[address];
@@ -251,6 +257,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->e & 0xf);
                        state->e = answer;
 
                        break;
@@ -262,6 +269,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->e & 0xf);
                        state->e = answer;
 
                        break;
@@ -281,7 +289,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }     
         case 0x20: UnimplementedInstruction(state); break;
-        case 0x21:  // LXI H, D16
+        case 0x21:  // LXI H, D16 (no affect on flags)
                    {
                        state->h = opcode[2];
                        state->l = opcode[1];
@@ -290,7 +298,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }
         case 0x22: UnimplementedInstruction(state); break;
-        case 0x23:  // INX H (rp is HL)
+        case 0x23:  // INX H (rp is HL, no flag affected)
                    {
                        uint16_t value = (state->h) << 8 | (state->l);
                        value++;
@@ -306,6 +314,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->h & 0xf);
                        state->h = answer;
 
                        break;
@@ -317,6 +326,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->h & 0xf);
                        state->h = answer;
 
                        break;
@@ -383,6 +393,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->l & 0xf);
                        state->l = answer;
 
                        break;
@@ -394,6 +405,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->l & 0xf);
                        state->l = answer;
 
                        break;
@@ -407,7 +419,7 @@ void Emulate8080Op(State8080* state) {
                            break;    
                    }
         case 0x30: UnimplementedInstruction(state); break;
-        case 0x31:  // LXI SP, D16
+        case 0x31:  // LXI SP, D16 (no affect on flags)
                    {
                        state->sp = (opcode[2]<<8) | opcode[1];
                        state->pc += 2;
@@ -422,7 +434,7 @@ void Emulate8080Op(State8080* state) {
 
                        break;
                    }
-        case 0x33:  // INX SP
+        case 0x33:  // INX SP, no flag affected
                    {
                        uint16_t value = state->sp + 1;
                        state->sp = value;
@@ -437,6 +449,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->memory[offset] & 0xf);
                        state->memory[offset] = answer;
 
                        break;
@@ -449,6 +462,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = ((answer & 0xff) == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->memory[offset] & 0xf);
                        state->memory[offset] = answer;
 
                        break;
@@ -480,7 +494,7 @@ void Emulate8080Op(State8080* state) {
                        break;
                    }
 
-        case 0x3a:  // LDA addr
+        case 0x3a:  // LDA addr (no flags affected)
                    {
                        uint16_t address = (opcode[2]<<8) | opcode[1];
                        state->a = state->memory[address];
@@ -502,6 +516,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) < (state->a & 0xf);
                        state->a = answer;
 
                        break;
@@ -513,6 +528,7 @@ void Emulate8080Op(State8080* state) {
                        state->cc.z = (answer == 0);
                        state->cc.s = ((answer & 0x80) != 0);
                        state->cc.p = parity(answer);
+                       state->cc.ac = (answer & 0xf) > (state->a & 0xf);
                        state->a = answer;
 
                        break;
